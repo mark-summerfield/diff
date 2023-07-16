@@ -1,78 +1,51 @@
 // Copyright © 2022-23 Mark Summerfield. All rights reserved.
 // License: Apache-2.0
 
-// Diff2 is a package for finding the differences between two sequences.
-//
-// Diff2 uses a sequence matcher based on a slightly simplified version of
-// Python's difflib sequence matcher.
-//
-// Thanks to generics Diff2 can compare any two slices of comparables.
-// (Although comparing float sequences is not recommended.) And using a key
-// function it can also compare two slices of structs.
-//
-// See [New] for how to create a Diff value and [NewKeyFn] for how to
-// create a DiffKeyFn value which can be used to compare sequences of
-// structs.
 package diff2
 
 import (
-	_ "embed"
-	"math"
-
-	"github.com/mark-summerfield/gset"
 	"golang.org/x/exp/slices"
 )
 
-//go:embed Version.dat
-var Version string
+type KeyFn[T any] func(x T) string
 
-type b2jmap[T comparable] map[T][]int
+type b2jmapkeyfn map[string][]int
 
-type Diff[T comparable] struct {
-	A   []T
-	B   []T
-	b2j b2jmap[T]
+type DiffKeyFn[T any] struct {
+	A     []T
+	B     []T
+	b2j   b2jmapkeyfn
+	keyfn KeyFn[T]
 }
 
-// New returns a Diff value based on the provided a and b slices. These
-// slices are only ever read and may be accessed as .A and .B. After
-// creating a Diff, call [Blocks] (or [Spans]) to see the differences.
-func New[T comparable](a, b []T) *Diff[T] {
-	diff := &Diff[T]{A: a, B: b, b2j: b2jmap[T]{}}
+// NewKeyFn returns a DiffKeyFn value based on the provided a and b
+// slices. These slices are only ever read and may be accessed as .A and .B.
+// After creating a DiffKeyFn, call [Blocks] (or [Spans]) to see the
+// differences.
+func NewKeyFn[T any](a, b []T, keyfn KeyFn[T]) *DiffKeyFn[T] {
+	diff := &DiffKeyFn[T]{A: a, B: b, b2j: b2jmapkeyfn{}, keyfn: keyfn}
 	diff.chainBseq()
 	return diff
 }
 
-func (me *Diff[T]) chainBseq() {
+func (me *DiffKeyFn[T]) chainBseq() {
 	for i, x := range me.B {
-		indexes, ok := me.b2j[x]
+		key := me.keyfn(x)
+		indexes, ok := me.b2j[key]
 		if !ok {
 			indexes = []int{}
 		}
-		me.b2j[x] = append(indexes, i)
-	}
-	length := len(me.B)
-	if length >= 200 { // remove most popular
-		popular := gset.New[T]()
-		limit := 1 + int(math.Floor((float64(length) / 100.0)))
-		for x, indexes := range me.b2j {
-			if len(indexes) > limit {
-				popular.Add(x)
-			}
-		}
-		for x := range popular {
-			delete(me.b2j, x)
-		}
+		me.b2j[key] = append(indexes, i)
 	}
 }
 
-// Blocks returns a sequence of Block values representing how to go from a
-// to b. Each block has a [Tag] and a sequence of A's and B's items.
+// Blocks returns a sequence of BlockKeyFn values representing how to go
+// from a to b. Each block has a [Tag] and a sequence of A's and B's items.
 // This is the easiest method for seeing the differences in two sequences.
 // See also [Spans].
-func (me *Diff[T]) Blocks() []Block[T] {
+func (me *DiffKeyFn[T]) Blocks() []BlockKeyFn[T] {
 	matches := me.matches()
-	blocks := []Block[T]{}
+	blocks := []BlockKeyFn[T]{}
 	for _, span := range spansForMatches(matches) {
 		var aitems, bitems []T
 		if span.Aend <= len(me.A) {
@@ -81,7 +54,7 @@ func (me *Diff[T]) Blocks() []Block[T] {
 		if span.Bend <= len(me.B) {
 			bitems = me.B[span.Bstart:span.Bend]
 		}
-		blocks = append(blocks, newBlock(span.Tag, aitems, bitems))
+		blocks = append(blocks, newBlockKeyFn(span.Tag, aitems, bitems))
 	}
 	return blocks
 }
@@ -91,12 +64,12 @@ func (me *Diff[T]) Blocks() []Block[T] {
 // a pair of start/end indexes into a and b.
 // The easiest method for seeing the differences in two sequences is
 // [Blocks].
-func (me *Diff[T]) Spans() []Span {
+func (me *DiffKeyFn[T]) Spans() []Span {
 	matches := me.matches()
 	return spansForMatches(matches)
 }
 
-func (me *Diff[T]) matches() []match {
+func (me *DiffKeyFn[T]) matches() []match {
 	aLength := len(me.A)
 	bLength := len(me.B)
 	queue := []Quad{newQuad(0, aLength, 0, bLength)}
@@ -146,7 +119,7 @@ func (me *Diff[T]) matches() []match {
 	return nonAdjacent
 }
 
-func (me *Diff[T]) longestMatch(quad Quad) match {
+func (me *DiffKeyFn[T]) longestMatch(quad Quad) match {
 	aStart := quad.Astart
 	aEnd := quad.Aend
 	bStart := quad.Bstart
@@ -157,7 +130,7 @@ func (me *Diff[T]) longestMatch(quad Quad) match {
 	j2len := map[int]int{}
 	for i := aStart; i < aEnd; i++ {
 		newJ2len := map[int]int{}
-		indexes, ok := me.b2j[me.A[i]]
+		indexes, ok := me.b2j[me.keyfn(me.A[i])]
 		if ok {
 			for _, j := range indexes {
 				if j < bStart {
@@ -179,43 +152,14 @@ func (me *Diff[T]) longestMatch(quad Quad) match {
 		j2len = newJ2len
 	}
 	for bestI > aStart && bestJ > bStart &&
-		me.A[bestI-1] == me.B[bestJ-1] {
+		me.keyfn(me.A[bestI-1]) == me.keyfn(me.B[bestJ-1]) {
 		bestI--
 		bestJ--
 		bestSize++
 	}
 	for bestI+bestSize < aEnd && bestJ+bestSize < bEnd &&
-		me.A[bestI+bestSize] == me.B[bestJ+bestSize] {
+		me.keyfn(me.A[bestI+bestSize]) == me.keyfn(me.B[bestJ+bestSize]) {
 		bestSize++
 	}
 	return newMatch(bestI, bestJ, bestSize)
-}
-
-func spansForMatches(matches []match) []Span {
-	spans := []Span{}
-	i := 0
-	j := 0
-	for _, match := range matches {
-		var tag Tag
-		if i < match.astart {
-			if j < match.bstart {
-				tag = Replace
-			} else {
-				tag = Delete
-			}
-		} else if j < match.bstart {
-			tag = Insert
-		}
-		if tag != Equal {
-			spans = append(spans,
-				newSpan(tag, i, match.astart, j, match.bstart))
-		}
-		i = match.astart + match.length
-		j = match.bstart + match.length
-		if match.length != 0 {
-			spans = append(spans,
-				newSpan(Equal, match.astart, i, match.bstart, j))
-		}
-	}
-	return spans
 }
