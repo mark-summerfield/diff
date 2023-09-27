@@ -3,7 +3,10 @@
 
 package diff2
 
-import "fmt"
+import (
+	"cmp"
+	"fmt"
+)
 
 type Tag uint8
 
@@ -72,14 +75,14 @@ func newMatch(astart, bstart, length int) match {
 	return match{astart: astart, bstart: bstart, length: length}
 }
 
-func matchLess(a, b match) bool {
-	if a.astart != b.astart {
-		return a.astart < b.astart
+func matchCompare(a, b match) int {
+	if n := cmp.Compare(a.astart, b.astart); n != 0 {
+		return n
 	}
-	if a.bstart != b.bstart {
-		return a.bstart < b.bstart
+	if n := cmp.Compare(a.bstart, b.bstart); n != 0 {
+		return n
 	}
-	return a.length < b.length
+	return cmp.Compare(a.length, b.length)
 }
 
 type Quad struct {

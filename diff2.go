@@ -18,9 +18,9 @@ package diff2
 import (
 	_ "embed"
 	"math"
+	"slices"
 
 	"github.com/mark-summerfield/gset"
-	"golang.org/x/exp/slices"
 )
 
 //go:embed Version.dat
@@ -121,7 +121,7 @@ func (me *Diff[T]) matches() []match {
 			}
 		}
 	}
-	slices.SortFunc(matches, matchLess)
+	slices.SortFunc(matches, matchCompare)
 	aStart := 0
 	bStart := 0
 	length := 0

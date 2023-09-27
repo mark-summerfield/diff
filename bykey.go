@@ -3,9 +3,7 @@
 
 package diff2
 
-import (
-	"golang.org/x/exp/slices"
-)
+import "slices"
 
 type KeyFn[T any] func(x T) string
 
@@ -94,7 +92,7 @@ func (me *DiffKeyFn[T]) matches() []match {
 			}
 		}
 	}
-	slices.SortFunc(matches, matchLess)
+	slices.SortFunc(matches, matchCompare)
 	aStart := 0
 	bStart := 0
 	length := 0

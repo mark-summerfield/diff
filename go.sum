@@ -1,6 +1,4 @@
-github.com/mark-summerfield/gong v1.4.3 h1:QwHPZ+uCk2a80aZ+22qelyfrjO3C3b3wLouio0P2JiI=
-github.com/mark-summerfield/gong v1.4.3/go.mod h1:5kGj4lCGcOmseSRIGGo9GQdfjWP00BDXYmlIhuLauOY=
+github.com/mark-summerfield/gong v1.5.0 h1:sOyh3lpsAMxQH2Eh+ZCmAgboj4xFgpSbMs23jcvy9pY=
+github.com/mark-summerfield/gong v1.5.0/go.mod h1:72YkDglj79LfsGLYGCTcAt3gxlKDE/sooYQ/gVShkKg=
 github.com/mark-summerfield/gset v0.8.0 h1:sHjjEEuB1YoK8xlxwl+fezWbH/WQ9vC9qj9fVnbNNWU=
 github.com/mark-summerfield/gset v0.8.0/go.mod h1:tKC/xw9eYm52cH40BZMRTQNJRLeyio4s16djhVvP2o0=
-golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1 h1:MGwJjxBy0HJshjDNfLsYO8xppfqWlA5ZT9OhtUUhTNw=
-golang.org/x/exp v0.0.0-20230713183714-613f0c0eb8a1/go.mod h1:FXUEEKJgO7OQYeo8N01OfiKP8RXMtf6e8aTskBGqWdc=
