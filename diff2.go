@@ -16,19 +16,20 @@
 package diff2
 
 import (
+	"cmp"
 	_ "embed"
 	"math"
 	"slices"
 
-	"github.com/mark-summerfield/gset"
+	"github.com/mark-summerfield/set"
 )
 
 //go:embed Version.dat
 var Version string
 
-type b2jmap[T comparable] map[T][]int
+type b2jmap[T cmp.Ordered] map[T][]int
 
-type Diff[T comparable] struct {
+type Diff[T cmp.Ordered] struct {
 	A   []T
 	B   []T
 	b2j b2jmap[T]
@@ -37,7 +38,7 @@ type Diff[T comparable] struct {
 // New returns a Diff value based on the provided a and b slices. These
 // slices are only ever read and may be accessed as .A and .B. After
 // creating a Diff, call [Blocks] (or [Spans]) to see the differences.
-func New[T comparable](a, b []T) *Diff[T] {
+func New[T cmp.Ordered](a, b []T) *Diff[T] {
 	diff := &Diff[T]{A: a, B: b, b2j: b2jmap[T]{}}
 	diff.chainBseq()
 	return diff
@@ -53,14 +54,14 @@ func (me *Diff[T]) chainBseq() {
 	}
 	length := len(me.B)
 	if length >= 200 { // remove most popular
-		popular := gset.New[T]()
+		popular := set.New[T]()
 		limit := 1 + int(math.Floor((float64(length) / 100.0)))
 		for x, indexes := range me.b2j {
 			if len(indexes) > limit {
 				popular.Add(x)
 			}
 		}
-		for x := range popular {
+		for x := range popular.All() {
 			delete(me.b2j, x)
 		}
 	}

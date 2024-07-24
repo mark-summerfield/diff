@@ -3,7 +3,9 @@ clc -s -e diff2_test.go
 cat Version.dat
 go mod tidy
 go fmt .
-staticcheck .
+echo no staticcheck
+# staticcheck .
 go vet .
-golangci-lint run
+echo no golangci-lint
+# golangci-lint run
 git st

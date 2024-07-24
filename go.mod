@@ -1,7 +1,16 @@
 module github.com/mark-summerfield/diff2
 
-go 1.21
+go 1.22.5
 
-require github.com/mark-summerfield/gset v0.8.0
+replace github.com/mark-summerfield/set => /home/mark/app/golib/set
 
-require github.com/mark-summerfield/gong v1.5.0
+replace github.com/mark-summerfield/ureal => /home/mark/app/golib/ureal
+
+replace github.com/mark-summerfield/utext => /home/mark/app/golib/utext
+
+require (
+	github.com/mark-summerfield/set v1.0.0
+	github.com/mark-summerfield/utext v1.0.0
+)
+
+require github.com/mark-summerfield/ureal v1.0.0 // indirect

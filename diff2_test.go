@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/mark-summerfield/gong"
+	"github.com/mark-summerfield/utext"
 )
 
 func testStrings(a, b string, expected []string, t *testing.T) {
@@ -111,7 +111,7 @@ func ExampleDiff_Blocks_ints() {
 	diff := New(a, b)
 	blocks := diff.Blocks()
 	for _, block := range blocks {
-		fmt.Println(block.Tag, gong.StringForSlice(block.Items()))
+		fmt.Println(block.Tag, utext.StringForSlice(block.Items()))
 	}
 	// Output:
 	// - 1
@@ -266,8 +266,8 @@ func Test006(t *testing.T) {
 	for i, block := range actual {
 		if !isEqualBlock(block, expected[i]) {
 			t.Errorf("expected %s[%s], got %s[%s]", expected[i].Tag,
-				gong.StringForSlice(expected[i].Items()), block.Tag,
-				gong.StringForSlice(block.Items()))
+				utext.StringForSlice(expected[i].Items()), block.Tag,
+				utext.StringForSlice(block.Items()))
 		}
 	}
 }
@@ -287,8 +287,8 @@ func Test007(t *testing.T) {
 	for i, block := range actual {
 		if !isEqualBlock(block, expected[i]) {
 			t.Errorf("expected %s[%s], got %s[%s]", expected[i].Tag,
-				gong.StringForSlice(expected[i].Items()), block.Tag,
-				gong.StringForSlice(block.Items()))
+				utext.StringForSlice(expected[i].Items()), block.Tag,
+				utext.StringForSlice(block.Items()))
 		}
 	}
 }
@@ -322,8 +322,8 @@ func Test010(t *testing.T) {
 	for i, block := range actual {
 		if !isEqualBlock(block, expected[i]) {
 			t.Errorf("expected %s[%s], got %s[%s]", expected[i].Tag,
-				gong.StringForSlice(expected[i].Items()), block.Tag,
-				gong.StringForSlice(block.Items()))
+				utext.StringForSlice(expected[i].Items()), block.Tag,
+				utext.StringForSlice(block.Items()))
 		}
 	}
 }
@@ -367,8 +367,8 @@ func Test012(t *testing.T) {
 	for i, block := range actual {
 		if !isEqualBlock(block, expected[i]) {
 			t.Errorf("expected %s[%s], got %s[%s]", expected[i].Tag,
-				gong.StringForSlice(expected[i].Items()), block.Tag,
-				gong.StringForSlice(block.Items()))
+				utext.StringForSlice(expected[i].Items()), block.Tag,
+				utext.StringForSlice(block.Items()))
 		}
 	}
 }
