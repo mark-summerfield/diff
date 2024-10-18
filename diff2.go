@@ -2,6 +2,9 @@
 // License: Apache-2.0
 
 // Diff2 is a package for finding the differences between two sequences.
+// ([TOC])
+//
+// [TOC]: file:///home/mark/app/golib/doc/index.html
 //
 // Diff2 uses a sequence matcher based on a slightly simplified version of
 // Python's difflib sequence matcher.
