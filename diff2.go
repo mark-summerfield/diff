@@ -1,10 +1,8 @@
 // Copyright © 2022-23 Mark Summerfield. All rights reserved.
 // License: Apache-2.0
 
-// Diff2 is a package for finding the differences between two sequences.
-// ([TOC])
-//
-// [TOC]: file:///home/mark/app/golib/doc/index.html
+// ([TOC]) Diff2 is a package for finding the differences between two
+// sequences.
 //
 // Diff2 uses a sequence matcher based on a slightly simplified version of
 // Python's difflib sequence matcher.
@@ -16,6 +14,8 @@
 // See [New] for how to create a Diff value and [NewKeyFn] for how to
 // create a DiffKeyFn value which can be used to compare sequences of
 // structs.
+//
+// [TOC]: file:///home/mark/app/golib/doc/index.html
 package diff2
 
 import (
