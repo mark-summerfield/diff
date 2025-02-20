@@ -111,7 +111,7 @@ func ExampleDiff_Blocks_ints() {
 	diff := New(a, b)
 	blocks := diff.Blocks()
 	for _, block := range blocks {
-		fmt.Println(block.Tag, utext.StringForSlice(block.Items()))
+		fmt.Println(block.Tag, utext.StringForSlice(block.Items(), " "))
 	}
 	// Output:
 	// - 1
@@ -151,10 +151,14 @@ func ExampleDiffKeyFn_Blocks_namekey() {
 		return fmt.Sprintf("Place{%d,%d,%q}", me.x, me.y, me.name)
 		}
 	*/
-	a := []Place{newPlace(1, 2, "foo"), newPlace(3, 4, "bar"),
-		newPlace(5, 6, "baz"), newPlace(7, 8, "quux")}
-	b := []Place{newPlace(1, 2, "foo"), newPlace(6, 2, "baz"),
-		newPlace(3, 4, "bar"), newPlace(7, 8, "quux")}
+	a := []Place{
+		newPlace(1, 2, "foo"), newPlace(3, 4, "bar"),
+		newPlace(5, 6, "baz"), newPlace(7, 8, "quux"),
+	}
+	b := []Place{
+		newPlace(1, 2, "foo"), newPlace(6, 2, "baz"),
+		newPlace(3, 4, "bar"), newPlace(7, 8, "quux"),
+	}
 	diff := NewKeyFn(a, b, func(p Place) string { return p.name })
 	blocks := diff.Blocks()
 	for _, block := range blocks {
@@ -173,10 +177,14 @@ func ExampleDiffKeyFn_Blocks_namekey() {
 func ExampleDiffKeyFn_Blocks_xkey() {
 	// a: [1 3 5 7]
 	// b: [1 6 3 7]
-	a := []Place{newPlace(1, 2, "foo"), newPlace(3, 4, "bar"),
-		newPlace(5, 6, "baz"), newPlace(7, 8, "quux")}
-	b := []Place{newPlace(1, 2, "foo"), newPlace(6, 2, "bar"),
-		newPlace(3, 4, "baz"), newPlace(7, 8, "quux")}
+	a := []Place{
+		newPlace(1, 2, "foo"), newPlace(3, 4, "bar"),
+		newPlace(5, 6, "baz"), newPlace(7, 8, "quux"),
+	}
+	b := []Place{
+		newPlace(1, 2, "foo"), newPlace(6, 2, "bar"),
+		newPlace(3, 4, "baz"), newPlace(7, 8, "quux"),
+	}
 	diff := NewKeyFn(a, b,
 		func(p Place) string { return strconv.Itoa(p.x) })
 	blocks := diff.Blocks()
@@ -228,8 +236,10 @@ func Test002(t *testing.T) {
 }
 
 func Test003(t *testing.T) {
-	expected := []string{"= the quick", "% red", "= fox jumped over the",
-		"% very busy", "= dogs"}
+	expected := []string{
+		"= the quick", "% red", "= fox jumped over the",
+		"% very busy", "= dogs",
+	}
 	testStrings(
 		"the quick brown fox jumped over the lazy dogs",
 		"the quick red fox jumped over the very busy dogs",
@@ -244,8 +254,10 @@ func Test004(t *testing.T) {
 }
 
 func Test005(t *testing.T) {
-	expected := []string{"= private", "+ volatile",
-		"= Thread currentThread;"}
+	expected := []string{
+		"= private", "+ volatile",
+		"= Thread currentThread;",
+	}
 	a := "private Thread currentThread;"
 	b := "private volatile Thread currentThread;"
 	testStrings(a, b, expected, t)
@@ -266,8 +278,8 @@ func Test006(t *testing.T) {
 	for i, block := range actual {
 		if !isEqualBlock(block, expected[i]) {
 			t.Errorf("expected %s[%s], got %s[%s]", expected[i].Tag,
-				utext.StringForSlice(expected[i].Items()), block.Tag,
-				utext.StringForSlice(block.Items()))
+				utext.StringForSlice(expected[i].Items(), " "), block.Tag,
+				utext.StringForSlice(block.Items(), " "))
 		}
 	}
 }
@@ -287,8 +299,8 @@ func Test007(t *testing.T) {
 	for i, block := range actual {
 		if !isEqualBlock(block, expected[i]) {
 			t.Errorf("expected %s[%s], got %s[%s]", expected[i].Tag,
-				utext.StringForSlice(expected[i].Items()), block.Tag,
-				utext.StringForSlice(block.Items()))
+				utext.StringForSlice(expected[i].Items(), " "), block.Tag,
+				utext.StringForSlice(block.Items(), " "))
 		}
 	}
 }
@@ -322,8 +334,8 @@ func Test010(t *testing.T) {
 	for i, block := range actual {
 		if !isEqualBlock(block, expected[i]) {
 			t.Errorf("expected %s[%s], got %s[%s]", expected[i].Tag,
-				utext.StringForSlice(expected[i].Items()), block.Tag,
-				utext.StringForSlice(block.Items()))
+				utext.StringForSlice(expected[i].Items(), " "), block.Tag,
+				utext.StringForSlice(block.Items(), " "))
 		}
 	}
 }
@@ -367,8 +379,8 @@ func Test012(t *testing.T) {
 	for i, block := range actual {
 		if !isEqualBlock(block, expected[i]) {
 			t.Errorf("expected %s[%s], got %s[%s]", expected[i].Tag,
-				utext.StringForSlice(expected[i].Items()), block.Tag,
-				utext.StringForSlice(block.Items()))
+				utext.StringForSlice(expected[i].Items(), " "), block.Tag,
+				utext.StringForSlice(block.Items(), " "))
 		}
 	}
 }
