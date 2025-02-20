@@ -1,7 +1,7 @@
-// Copyright © 2022-23 Mark Summerfield. All rights reserved.
+// Copyright © 2022-25 Mark Summerfield. All rights reserved.
 // License: Apache-2.0
 
-package diff2
+package diff
 
 import "slices"
 

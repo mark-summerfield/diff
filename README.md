@@ -1,6 +1,6 @@
-# diff2
+# diff
 
-Diff2 a Go package for finding the differences between two sequences.
+Diff a Go package for finding the differences between two sequences.
 
 (This package is based on and supercedes my go-diff/differ package.)
 

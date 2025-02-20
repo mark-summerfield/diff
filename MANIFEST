@@ -1,8 +1,8 @@
-diff2.go
+diff.go
 bykey.go
 structs.go
 
-diff2_test.go
+diff_test.go
 
 README.md
 

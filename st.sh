@@ -1,5 +1,5 @@
 #!/bin/bash
-clc -s -e diff2_test.go
+clc -s -e diff_test.go
 cat Version.dat
 go mod tidy
 go fmt .

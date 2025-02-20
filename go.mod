@@ -1,4 +1,4 @@
-module github.com/mark-summerfield/diff2
+module github.com/mark-summerfield/diff
 
 go 1.23
 
