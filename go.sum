@@ -1,0 +1,4 @@
+github.com/mark-summerfield/set v1.0.0 h1:VgoB7pO4+4VIH4MfOVSWKEzMGIRNjRvkYn5ZsdDfjEo=
+github.com/mark-summerfield/set v1.0.0/go.mod h1:L1xP+pyZc1erPehfwMYvVCZafIjZx3Vj4wyTOABWZ+A=
+github.com/mark-summerfield/utext v0.0.0-20250527072059-af9de8cedc6e h1:F+tEiriK+W+bXjOH3Ckf1Xo8oUfVYVw08O3dBJWsCDA=
+github.com/mark-summerfield/utext v0.0.0-20250527072059-af9de8cedc6e/go.mod h1:d6Tsnr8hj2Mxf1UPXZB9xqCpv0IzKC3PBXwHhjUaMzs=

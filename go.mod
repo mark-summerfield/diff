@@ -2,13 +2,7 @@ module github.com/mark-summerfield/diff
 
 go 1.23
 
-replace github.com/mark-summerfield/set => /home/mark/app/golib/set
-
-replace github.com/mark-summerfield/unum => /home/mark/app/golib/unum
-
-replace github.com/mark-summerfield/utext => /home/mark/app/golib/utext
-
 require (
 	github.com/mark-summerfield/set v1.0.0
-	github.com/mark-summerfield/utext v1.0.0
+	github.com/mark-summerfield/utext v0.0.0-20250527072059-af9de8cedc6e
 )
