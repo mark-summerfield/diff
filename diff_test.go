@@ -413,7 +413,7 @@ func isEqualBlock[T comparable](a, b Block[T]) bool {
 	}
 	aitems := a.Items()
 	bitems := b.Items()
-	for i := 0; i < len(aitems); i++ {
+	for i := range aitems {
 		if aitems[i] != bitems[i] {
 			return false
 		}
